@@ -8,8 +8,11 @@ int main(int argc, char* argv[]) {
     consoleInit(GFX_TOP, NULL);
     fsInit();
 
-    FS_Archive arc = 0;
-    Result ret = archiveMount(ARCHIVE_SAVEDATA, fsMakePath(PATH_EMPTY, ""), "test");
+    FS_Path path = fsMakePath(PATH_EMPTY, "");
+    Result ret = FSUSER_FormatSaveData(ARCHIVE_SAVEDATA, path, 1024*128, 1, 1, 3, 3, false);
+    printf("FSUSER_FormatSaveData: %s! (0x%lx)", R_FAILED(ret) ? "failed" : "success", ret);
+
+    ret = archiveMount(ARCHIVE_SAVEDATA, path, "test");
     printf("archiveMount: %s! (0x%lx)", R_FAILED(ret) ? "failed" : "success", ret);
 
     while (aptMainLoop()) {
